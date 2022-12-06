@@ -1,0 +1,31 @@
+### 로그인
+POST http://{{host}}/api/user/login
+Content-Type: application/json
+
+{
+  "id": "ghhan",
+  "password" :"1234"
+}
+
+> {%
+    // client.test("응답이 정상적으로 왔는지 확인한다", function() {
+    //     client.log("응답코드= " + response.status);
+    //     client.assert(response.status == 200 || response.status == 302,"응답 실패")
+    // });
+    // client.log("token : " + response.body.json.token);
+    client.global.set("authorizationToken", response.body);
+%}
+
+### 회원가입
+POST http://{{host}}/api/user/sign-up
+Content-Type: application/json
+
+{
+  "id": "ghhan5",
+  "password" :"buy92hkhasdfsafG",
+  "userName" : "한규호"
+}
+
+### 유저 조회
+GET http://{{host}}/api/user/info/ghhan
+X-AUTH-TOKEN: {{authorizationToken}}

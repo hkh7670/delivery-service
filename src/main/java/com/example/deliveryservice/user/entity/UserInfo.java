@@ -7,14 +7,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
-@Builder
+
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 @Table(name = "USER_INFO")
 public class UserInfo extends BaseTimeEntity {
     @Id
@@ -29,4 +28,11 @@ public class UserInfo extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Builder
+    public UserInfo(String id, String password, String userName, Role role) {
+        this.id = id;
+        this.password = password;
+        this.userName = userName;
+        this.role = role;
+    }
 }

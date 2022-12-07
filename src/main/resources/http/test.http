@@ -7,25 +7,29 @@ Content-Type: application/json
   "password" :"1234"
 }
 
-> {%
-    // client.test("응답이 정상적으로 왔는지 확인한다", function() {
-    //     client.log("응답코드= " + response.status);
-    //     client.assert(response.status == 200 || response.status == 302,"응답 실패")
-    // });
-    // client.log("token : " + response.body.json.token);
-    client.global.set("authorizationToken", response.body);
-%}
+> {% client.global.set("authorizationToken", String(response.body)); %}
 
 ### 회원가입
 POST http://{{host}}/api/user/sign-up
 Content-Type: application/json
 
 {
-  "id": "ghhan5",
-  "password" :"buy92hkhasdfsafG",
+  "id": "ghhan7",
+  "password" :"Buy92hkh~!@#",
   "userName" : "한규호"
 }
 
 ### 유저 조회
 GET http://{{host}}/api/user/info/ghhan
+X-AUTH-TOKEN: {{authorizationToken}}
+
+
+### 테스트
+GET http://{{host}}/api/user/test
+X-AUTH-TOKEN: {{authorizationToken}}
+
+
+
+### 주문조회
+GET http://{{host}}/api/order?startDate=20221103&endDate=20221208
 X-AUTH-TOKEN: {{authorizationToken}}

@@ -2,6 +2,8 @@ package com.example.deliveryservice.user.service;
 
 import com.example.deliveryservice.common.domain.Role;
 import com.example.deliveryservice.common.exception.BadRequestException;
+import com.example.deliveryservice.common.exception.BaseException;
+import com.example.deliveryservice.common.exception.ErrorCode;
 import com.example.deliveryservice.common.exception.NotFoundException;
 import com.example.deliveryservice.config.security.JwtTokenProvider;
 import com.example.deliveryservice.user.dto.UserSignInRequest;
@@ -46,7 +48,7 @@ public class UserService {
         log.info("request : {}", request.toString());
         UserInfo userInfo = getUserById(request.getId());
         if (!passwordEncoder.matches(request.getPassword(), userInfo.getPassword())) {
-            throw new IllegalArgumentException("이메일 또는 비밀번호가 맞지 않습니다.");
+            throw new BaseException(ErrorCode.INCORRECT_PASSWORD);
         }
 
         return jwtTokenProvider.createToken(userInfo.getId(), userInfo.getRole());

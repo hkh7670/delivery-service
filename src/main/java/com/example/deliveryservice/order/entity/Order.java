@@ -1,6 +1,7 @@
 package com.example.deliveryservice.order.entity;
 
 import com.example.deliveryservice.common.entity.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,7 +35,8 @@ public class Order extends BaseTimeEntity {
     @Column(name = "ADM_CD")
     private String admCd;
 
-    @OneToMany(fetch = FetchType.LAZY)
+//    @JsonIgnore
+    @OneToMany
     @JoinColumn(name = "ORDER_ID")
     private List<OrderDetail> orderDetailList = new ArrayList<>();
 }

@@ -28,4 +28,12 @@ public class OrderDetail extends BaseTimeEntity {
 
     @Column(name = "QUANTITY")
     private Integer quantity;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ID", insertable = false, updatable = false)
+//    private Order order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MENU_ID", insertable = false, updatable = false)
+    private MenuInfo menuInfo;
 }

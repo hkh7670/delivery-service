@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @Query("select o from Order o join fetch o.orderDetailList where o.userId = :userId and o.regDate >= :startDate and o.regDate < :endDate ")
+    @Query("select distinct o from Order o join fetch o.orderDetailList od join fetch od.menuInfo where o.userId = :userId and o.regDate >= :startDate and o.regDate < :endDate ")
     List<Order> findByUserIdAndRegDateBetween(String userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

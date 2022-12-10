@@ -1,6 +1,8 @@
 package com.example.deliveryservice.order.controller;
 
 import com.example.deliveryservice.common.exception.ErrorResponse;
+import com.example.deliveryservice.config.security.SecurityUtil;
+import com.example.deliveryservice.order.domain.OrderStatusEnum;
 import com.example.deliveryservice.order.entity.Order;
 import com.example.deliveryservice.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,18 +13,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/order")
 @Tag(name = "OrderController")
+@Slf4j
 public class OrderController {
     private final OrderService orderService;
 
@@ -37,6 +39,18 @@ public class OrderController {
     })
     @GetMapping()
     public ResponseEntity<List<Order>> getUserOrderList(@RequestParam String startDate, @RequestParam String endDate) {
-        return ResponseEntity.ok(orderService.getUserOrderList(startDate, endDate));
+        String userId = SecurityUtil.getCurrentUserId();
+        log.info("userId : {}", userId);
+        return ResponseEntity.ok(orderService.getUserOrderList(startDate, endDate, userId));
+    }
+
+    @PutMapping("{orderId}")
+    public ResponseEntity<Void> modifyOrderInfo(@PathVariable Long orderId) {
+        String userId = SecurityUtil.getCurrentUserId();
+        log.info("userId : {}", userId);
+        log.info("order ID : {}", orderId);
+        log.info("order enum : {}", OrderStatusEnum.ACCEPTED);
+        orderService.modifyOrderInfo(orderId);
+        return ResponseEntity.ok().build();
     }
 }

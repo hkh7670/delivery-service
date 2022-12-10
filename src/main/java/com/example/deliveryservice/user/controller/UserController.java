@@ -1,6 +1,7 @@
 package com.example.deliveryservice.user.controller;
 
 import com.example.deliveryservice.config.security.SecurityUser;
+import com.example.deliveryservice.config.security.SecurityUtil;
 import com.example.deliveryservice.user.service.UserService;
 import com.example.deliveryservice.user.dto.UserSignInRequest;
 import com.example.deliveryservice.user.dto.UserSignUpRequest;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,7 @@ public class UserController {
     // 로그인
     @PostMapping("login")
     public ResponseEntity<String> login(@RequestBody UserSignInRequest request) {
+//        Authentication authentication = SecurityUtil.getAuthentication();
         return ResponseEntity.ok(userService.signInUser(request));
     }
 

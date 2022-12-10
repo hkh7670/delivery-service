@@ -3,8 +3,8 @@ POST http://{{host}}/api/user/login
 Content-Type: application/json
 
 {
-  "id": "ghhan",
-  "password" :"1234"
+  "id": "ghhan7",
+  "password" :"deliveryTest123~"
 }
 
 > {% client.global.set("authorizationToken", String(response.body)); %}
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
   "id": "ghhan7",
-  "password" :"Buy92hkh~!@#",
+  "password" :"deliveryTest123~",
   "userName" : "한규호"
 }
 
@@ -31,5 +31,5 @@ X-AUTH-TOKEN: {{authorizationToken}}
 
 
 ### 주문조회
-GET http://{{host}}/api/order?startDate=20221103&endDate=20221208
+GET http://{{host}}/api/order?startDate=20221207&endDate=20221209
 X-AUTH-TOKEN: {{authorizationToken}}

@@ -7,3 +7,6 @@
    4. MERCHANT_DELIVERY_INFO : 특정 가맹점이 배달 가능한 법정동 정보
    5. ORDER : 주문 정보
    6. ORDER_DETAIL : 주문 상세 정보 (메뉴명, 메뉴갯수 등등..)
+   7. USER_INFO : 유저 정보
+   
+2. Swagger : http://localhost:8080/swagger-ui.html

@@ -12,11 +12,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final String[] PERMIT_ALL_LIST = {"/api/user/sign-up", "/api/user/login", "/api-docs/**",
+            "/swagger-ui**", "/swagger-ui/**"};
 
     // 비밀번호 암호화
     @Bean
@@ -41,7 +45,7 @@ public class SecurityConfig {
                 .authorizeRequests() // 요청에 대한 사용 권한 체크
 //                .antMatchers("/admin/**").hasRole("ADMIN")
 //                .antMatchers("/api/post/**").authenticated()
-                .antMatchers("/api/user/sign-up", "/api/user/login").permitAll()
+                .antMatchers(PERMIT_ALL_LIST).permitAll()
 //                .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
 //                .antMatchers("/api/user/info/**").hasRole("MEMBER")
                 .anyRequest().authenticated()

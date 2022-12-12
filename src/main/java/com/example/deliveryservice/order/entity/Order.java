@@ -1,11 +1,9 @@
 package com.example.deliveryservice.order.entity;
 
 import com.example.deliveryservice.common.entity.BaseTimeEntity;
+import com.example.deliveryservice.order.domain.OrderStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,14 +27,31 @@ public class Order extends BaseTimeEntity {
     @Column(name = "MERCHANT_ID")
     private Long merchantId;
 
-    @Column(name = "ADDRESS")
-    private String address;
+    @Column(name = "BASE_ADDRESS")
+    private String baseAddress;
+
+    @Column(name = "DETAIL_ADDRESS")
+    private String detailAddress;
 
     @Column(name = "ADM_CD")
     private String admCd;
 
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
+    private OrderStatusEnum status;
+
 //    @JsonIgnore
-    @OneToMany
+    @OneToMany()
     @JoinColumn(name = "ORDER_ID")
     private List<OrderDetail> orderDetailList = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MERCHANT_ID", insertable = false, updatable = false)
+    private Merchant merchant;
+
+    public void setAddressAndAdmCd(String baseAddress, String detailAddress, String admCd) {
+        this.baseAddress = baseAddress;
+        this.detailAddress = detailAddress;
+        this.admCd = admCd;
+    }
 }

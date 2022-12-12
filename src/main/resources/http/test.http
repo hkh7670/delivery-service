@@ -3,8 +3,8 @@ POST http://{{host}}/api/user/login
 Content-Type: application/json
 
 {
-  "id": "ghhan7",
-  "password" :"deliveryTest123~"
+  "id": "ghhan",
+  "password" :"ghhan123456~!"
 }
 
 > {% client.global.set("authorizationToken", String(response.body)); %}
@@ -14,22 +14,29 @@ POST http://{{host}}/api/user/sign-up
 Content-Type: application/json
 
 {
-  "id": "ghhan7",
-  "password" :"deliveryTest123~",
+  "id": "ghhan",
+  "password" :"ghhan123456~!",
   "userName" : "한규호"
 }
 
-### 유저 조회
-GET http://{{host}}/api/user/info/ghhan
-X-AUTH-TOKEN: {{authorizationToken}}
-
-
-### 테스트
-GET http://{{host}}/api/user/test
-X-AUTH-TOKEN: {{authorizationToken}}
-
-
-
 ### 주문조회
 GET http://{{host}}/api/order?startDate=20221207&endDate=20221209
+Content-Type: application/json
+X-AUTH-TOKEN: {{authorizationToken}}
+
+
+### 주문수정
+PUT http://{{host}}/api/order/2
+Content-Type: application/json
+X-AUTH-TOKEN: {{authorizationToken}}
+
+{
+  "admCd": "4119011000",
+  "baseAddress": "경기도 부천시 소사본동11112313123",
+  "detailAddress": "10-1123123"
+}
+
+### 배송주소 조회
+GET http://{{host}}/api/order/search-address?keyword=중동로 71번길&currentPage=1&countPerPage=20
+Content-Type: application/json
 X-AUTH-TOKEN: {{authorizationToken}}

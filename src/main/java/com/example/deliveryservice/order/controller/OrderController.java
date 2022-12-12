@@ -2,7 +2,7 @@ package com.example.deliveryservice.order.controller;
 
 import com.example.deliveryservice.common.exception.ErrorResponse;
 import com.example.deliveryservice.config.security.SecurityUtil;
-import com.example.deliveryservice.order.domain.OrderStatusEnum;
+import com.example.deliveryservice.order.dto.OrderModifyRequest;
 import com.example.deliveryservice.order.entity.Order;
 import com.example.deliveryservice.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,13 +44,38 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getUserOrderList(startDate, endDate, userId));
     }
 
+    @Operation(summary = "배달 주문 수정", description = "배달 도착지 주소를 변경한다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+    })
     @PutMapping("{orderId}")
-    public ResponseEntity<Void> modifyOrderInfo(@PathVariable Long orderId) {
+    public ResponseEntity<Void> modifyOrderInfo(@PathVariable Long orderId, @RequestBody OrderModifyRequest request) {
         String userId = SecurityUtil.getCurrentUserId();
         log.info("userId : {}", userId);
-        log.info("order ID : {}", orderId);
-        log.info("order enum : {}", OrderStatusEnum.ACCEPTED);
-        orderService.modifyOrderInfo(orderId);
+        orderService.modifyOrderInfo(orderId, userId, request);
         return ResponseEntity.ok().build();
     }
+
+
+    @Operation(summary = "주소 검색", description = "배달 주소를 검색한다. (프론트용)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+//                    content = @Content(schema = @Schema(implementation = Order.class))),
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Map.class)))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+    })
+    @GetMapping("search-address")
+    public ResponseEntity<Map> searchAddressInfo(@RequestParam String keyword, @RequestParam String currentPage, @RequestParam String countPerPage) {
+        return ResponseEntity.ok(orderService.searchAddressInfo(keyword, currentPage, countPerPage));
+    }
+
+
+
+
 }
